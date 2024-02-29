@@ -1,10 +1,6 @@
 package com.bank.test.profile.service;
 
-import com.bank.profile.dto.ActualRegistrationDto;
-import com.bank.profile.dto.PassportDto;
 import com.bank.profile.dto.ProfileDto;
-import com.bank.profile.entity.ActualRegistrationEntity;
-import com.bank.profile.entity.PassportEntity;
 import com.bank.profile.entity.ProfileEntity;
 import com.bank.profile.mapper.ProfileMapper;
 import com.bank.profile.repository.ProfileRepository;
@@ -30,16 +26,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class ProfileServiceImpTest {
 
-    private  final ProfileEntity userRob = new ProfileEntity(1L, 123L, "rob@mail.ru", "Rob", 123L, 123L
-                                                            , new PassportEntity(), new ActualRegistrationEntity());
-    private  final ProfileEntity userAlice = new ProfileEntity(2L, 124L, "alice@mail.ru", "Alice", 124L, 124L
-                                                              , new PassportEntity(), new ActualRegistrationEntity());
-    private  final ProfileDto userRobDto = new ProfileDto(1L, 123L, "rob@mail.ru", "Rob", 123L, 123L
-                                                         , new PassportDto(), new ActualRegistrationDto());
-    private  final ProfileDto userAliceDto = new ProfileDto(2L, 124L, "alice@mail.ru", "Alice", 124L, 124L
-                                                           , new PassportDto(), new ActualRegistrationDto());
-
-
     @Mock
     private ProfileRepository repository;
 
@@ -49,6 +35,28 @@ public class ProfileServiceImpTest {
     @InjectMocks
     private ProfileServiceImp profileService;
 
+    private final ProfileEntity userRob = new ProfileEntity();
+    {
+        userRob.setId(1L);
+        userRob.setInn(123L);
+    }
+    private final ProfileEntity userAlice = new ProfileEntity();
+    {
+        userRob.setId(2L);
+        userRob.setInn(125L);
+    }
+    private final ProfileDto userRobDto = new ProfileDto();
+    {
+        userRob.setId(1L);
+        userRob.setInn(123L);
+    }
+    private final ProfileDto userAliceDto = new ProfileDto();
+    {
+        userRob.setId(2L);
+        userRob.setInn(125L);
+    }
+
+    private final Long id = 1L;
     @Test
     public void testFindAllById() {
         List<Long> ids = Arrays.asList(1L, 2L);
@@ -69,7 +77,6 @@ public class ProfileServiceImpTest {
 
     @Test
     public void testFindById() {
-        Long id = 1L;
 
         ProfileEntity profileEntity = userRob;
         ProfileDto expectedDto = userRobDto;
@@ -86,7 +93,6 @@ public class ProfileServiceImpTest {
 
     @Test
     public void testFindById_EntityNotFoundException() {
-        Long id = 2L;
 
         when(repository.findById(id)).thenReturn(Optional.empty());
 
@@ -115,7 +121,6 @@ public class ProfileServiceImpTest {
 
     @Test
     public void testUpdate() {
-        Long id = 1L;
         ProfileDto profileDto = userRobDto;
         ProfileEntity profileEntityById = userAlice;
         ProfileEntity updatedProfileEntity = userRob;
@@ -136,7 +141,6 @@ public class ProfileServiceImpTest {
 
     @Test
     public void testUpdate_EntityNotFoundException() {
-        Long id = 2L;
         ProfileDto profileDto = userAliceDto;
 
         when(repository.findById(id)).thenReturn(Optional.empty());

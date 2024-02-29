@@ -1,10 +1,10 @@
 package com.bank.test.profile.service;
 
-import com.bank.profile.dto.PassportDto;
-import com.bank.profile.entity.PassportEntity;
-import com.bank.profile.mapper.PassportMapper;
-import com.bank.profile.repository.PassportRepository;
-import com.bank.profile.service.impl.PassportServiceImp;
+import com.bank.profile.dto.ActualRegistrationDto;
+import com.bank.profile.entity.ActualRegistrationEntity;
+import com.bank.profile.mapper.ActualRegistrationMapper;
+import com.bank.profile.repository.ActualRegistrationRepository;
+import com.bank.profile.service.impl.ActualRegistrationServiceImp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,51 +23,54 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PassportServiceImplTest {
-
+public class ActualRegistrationServiceTest {
     @Mock
-    private PassportRepository repository;
-
+    ActualRegistrationRepository repository;
     @Mock
-    private PassportMapper mapper;
-
+    ActualRegistrationMapper mapper;
     @InjectMocks
-    private PassportServiceImp passportService;
-    private final PassportEntity userRob = new PassportEntity();
+    private ActualRegistrationServiceImp actualRegistrationService;
+
+    private final ActualRegistrationEntity userRob = new ActualRegistrationEntity();
+
     {
         userRob.setId(1L);
-        userRob.setFirstName("Rob");
-    }
-    private final PassportEntity userAlice = new PassportEntity();
-    {
-        userAlice.setId(2L);
-        userAlice.setFirstName("Alice");
     }
 
-    private final PassportDto userRobDto = new PassportDto();
+    private final ActualRegistrationEntity userAlice = new ActualRegistrationEntity();
+
+    {
+        userAlice.setId(2L);
+    }
+
+    private final ActualRegistrationDto userRobDto = new ActualRegistrationDto();
+
     {
         userRobDto.setId(1L);
-        userRobDto.setFirstName("Rob");
     }
-    private final PassportDto userAliceDto = new PassportDto();
+
+    private final ActualRegistrationDto userAliceDto = new ActualRegistrationDto();
+
     {
         userAliceDto.setId(2L);
-        userAliceDto.setFirstName("Alice");
     }
+
     private final Long id = 1L;
 
     @Test
     public void testFindById() {
+        Long id = 1L;
 
         when(repository.findById(id)).thenReturn(Optional.of(userRob));
         when(mapper.toDto(userRob)).thenReturn(userRobDto);
 
-        PassportDto actualDto = passportService.findById(id);
+        ActualRegistrationDto actualDto = actualRegistrationService.findById(id);
 
         assertEquals(userRobDto, actualDto);
         verify(repository, times(1)).findById(id);
         verify(mapper, times(1)).toDto(userRob);
     }
+
 
     @Test
     public void testFindById_EntityNotFoundException() {
@@ -75,9 +78,9 @@ public class PassportServiceImplTest {
         when(repository.findById(id)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> passportService.findById(id));
+                () -> actualRegistrationService.findById(id));
 
-        assertEquals("passport с данным id не найден!", exception.getMessage());
+        assertEquals("actualRegistration с данным id не найден!", exception.getMessage());
     }
 
     @Test
@@ -87,9 +90,9 @@ public class PassportServiceImplTest {
         when(repository.save(userRob)).thenReturn(userRob);
         when(mapper.toDto(userRob)).thenReturn(userRobDto);
 
-        PassportDto savedPassportDto = passportService.save(userRobDto);
+        ActualRegistrationDto savedActualRegistrationDto = actualRegistrationService.save(userRobDto);
 
-        assertEquals(userRobDto, savedPassportDto);
+        assertEquals(userRobDto, savedActualRegistrationDto);
         verify(mapper, times(1)).toEntity(userRobDto);
         verify(repository, times(1)).save(userRob);
         verify(mapper, times(1)).toDto(userRob);
@@ -103,9 +106,9 @@ public class PassportServiceImplTest {
         when(repository.save(userRob)).thenReturn(userRob);
         when(mapper.toDto(userRob)).thenReturn(userRobDto);
 
-        PassportDto updatedPassportDto = passportService.update(id, userRobDto);
+        ActualRegistrationDto updatedActualRegistrationDto = actualRegistrationService.update(id, userRobDto);
 
-        assertEquals(userRobDto, updatedPassportDto);
+        assertEquals(userRobDto, updatedActualRegistrationDto);
         verify(repository, times(1)).findById(id);
         verify(mapper, times(1)).mergeToEntity(userRobDto, userAlice);
         verify(repository, times(1)).save(userRob);
@@ -118,23 +121,23 @@ public class PassportServiceImplTest {
         when(repository.findById(id)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> passportService.update(id, userAliceDto));
+                () -> actualRegistrationService.update(id, userAliceDto));
 
-        assertEquals("Обновление невозможно, passport не найден!", exception.getMessage());
+        assertEquals("Обновление невозможно, ActualRegistration не найден!", exception.getMessage());
     }
 
     @Test
     public void testFindAllById() {
         List<Long> ids = Arrays.asList(1L, 2L);
 
-        List<PassportEntity> passportEntities = Arrays.asList(userRob, userAlice);
+        List<ActualRegistrationEntity> passportEntities = Arrays.asList(userRob, userAlice);
 
-        List<PassportDto> expectedDtoList = Arrays.asList(userRobDto, userAliceDto);
+        List<ActualRegistrationDto> expectedDtoList = Arrays.asList(userRobDto, userAliceDto);
 
         when(repository.findAllById(ids)).thenReturn(passportEntities);
         when(mapper.toDtoList(passportEntities)).thenReturn(expectedDtoList);
 
-        List<PassportDto> actualDtoList = passportService.findAllById(ids);
+        List<ActualRegistrationDto> actualDtoList = actualRegistrationService.findAllById(ids);
 
         assertEquals(expectedDtoList, actualDtoList);
         verify(repository, times(1)).findAllById(ids);

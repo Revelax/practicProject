@@ -33,18 +33,30 @@ public class RegistrationServiceImpTest {
     @InjectMocks
     private RegistrationServiceImp registrationService;
 
-    private final RegistrationEntity userRobReg = new RegistrationEntity(1L, "USA", "New York", "New York City"
-                                                    , "Manhattan", "Midtown", "Broadway", "123", "A", "456", 10001L );
-    private final RegistrationEntity userAliceReg = new RegistrationEntity(2L, "Canada", "Ontario", "Toronto"
-            , "Downtown", "Financial District", "Bay Street", "456", "B", "456", 20002L );
-    private final RegistrationDto userRobRegDto = new RegistrationDto(1L, "USA", "New York", "New York City"
-            , "Manhattan", "Midtown", "Broadway", "123", "A", "456", 10001L );
-    private final RegistrationDto userAliceRegDto = new RegistrationDto(2L, "Canada", "Ontario", "Toronto"
-            , "Downtown", "Financial District", "Bay Street", "456", "B", "456", 20002L );
+    private final RegistrationEntity userRobReg = new RegistrationEntity();
+    {
+        userRobReg.setId(1L);
+        userRobReg.setIndex(124L);
+    }
+    private final RegistrationEntity userAliceReg = new RegistrationEntity();
+    {
+        userAliceReg.setId(2L);
+        userAliceReg.setIndex(123L);
+    }
+    private final RegistrationDto userRobRegDto = new RegistrationDto();
+    {
+        userRobReg.setId(1L);
+        userRobReg.setIndex(124L);
+    }
+    private final RegistrationDto userAliceRegDto = new RegistrationDto();
+    {
+        userAliceReg.setId(2L);
+        userAliceReg.setIndex(123L);
+    }
+    private final Long id = 1L;
 
     @Test
     public void testFindById() {
-        Long id = 1L;
 
         RegistrationEntity registrationEntity = userRobReg;
         RegistrationDto expectedDto = userRobRegDto;
@@ -61,7 +73,6 @@ public class RegistrationServiceImpTest {
 
     @Test
     public void testFindById_EntityNotFoundException() {
-        Long id = 2L;
 
         when(repository.findById(id)).thenReturn(Optional.empty());
 
@@ -88,7 +99,6 @@ public class RegistrationServiceImpTest {
 
     @Test
     public void testUpdate() {
-        Long id = 1L;
 
         RegistrationDto registrationDto = userRobRegDto;
         RegistrationEntity registrationEntityById = userAliceReg;
@@ -110,7 +120,6 @@ public class RegistrationServiceImpTest {
 
     @Test
     public void testUpdate_EntityNotFoundException() {
-        Long id = 2L;
         RegistrationDto registrationDtoDto = userAliceRegDto;
 
         when(repository.findById(id)).thenReturn(Optional.empty());
