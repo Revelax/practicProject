@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan("com.bank.common")
 @EnableEurekaClient
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.bank.common", "com.bank.profile"})
 public class ProfileApplication {
     public static void main(String[] args) {
         SpringApplication.run(ProfileApplication.class, args);
