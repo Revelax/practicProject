@@ -1,10 +1,11 @@
-package com.bank.test.profile.service;
+package com.bank.profile.service;
 
 import com.bank.profile.dto.PassportDto;
 import com.bank.profile.entity.PassportEntity;
 import com.bank.profile.mapper.PassportMapper;
 import com.bank.profile.repository.PassportRepository;
 import com.bank.profile.service.impl.PassportServiceImp;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,15 +14,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@DisplayName(value = "Тест сервиса PassportServiceImpl ")
 @ExtendWith(MockitoExtension.class)
 public class PassportServiceImplTest {
 
@@ -32,78 +37,98 @@ public class PassportServiceImplTest {
     private PassportMapper mapper;
 
     @InjectMocks
-    private PassportServiceImp passportService;
+    private PassportServiceImp service;
+
     private final PassportEntity userRob = new PassportEntity();
+
     {
         userRob.setId(1L);
         userRob.setFirstName("Rob");
     }
+
     private final PassportEntity userAlice = new PassportEntity();
+
     {
         userAlice.setId(2L);
         userAlice.setFirstName("Alice");
     }
 
     private final PassportDto userRobDto = new PassportDto();
+
     {
         userRobDto.setId(1L);
         userRobDto.setFirstName("Rob");
     }
+
     private final PassportDto userAliceDto = new PassportDto();
+
     {
         userAliceDto.setId(2L);
         userAliceDto.setFirstName("Alice");
     }
-    private final Long id = 1L;
 
+    private final Long id = 1L;
+    @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
-    public void testFindById() {
+    public void findById_ReturnsActualDto_PositiveTest() {
 
         when(repository.findById(id)).thenReturn(Optional.of(userRob));
         when(mapper.toDto(userRob)).thenReturn(userRobDto);
 
-        PassportDto actualDto = passportService.findById(id);
+        PassportDto actualDto = service.findById(id);
 
         assertEquals(userRobDto, actualDto);
         verify(repository, times(1)).findById(id);
         verify(mapper, times(1)).toDto(userRob);
     }
-
+    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
-    public void testFindById_EntityNotFoundException() {
+    public void findById_ReturnsEntityNotFoundException_NegativeTest() {
 
         when(repository.findById(id)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> passportService.findById(id));
+                () -> service.findById(id));
 
         assertEquals("passport с данным id не найден!", exception.getMessage());
     }
-
+    @DisplayName(value = "добавление новой записи, позитивный сценарий")
     @Test
-    public void testSave() {
+    public void save_ReturnsSavedPassportDto_PositiveTest() {
 
         when(mapper.toEntity(userRobDto)).thenReturn(userRob);
         when(repository.save(userRob)).thenReturn(userRob);
         when(mapper.toDto(userRob)).thenReturn(userRobDto);
 
-        PassportDto savedPassportDto = passportService.save(userRobDto);
+        PassportDto savedPassportDto = service.save(userRobDto);
 
         assertEquals(userRobDto, savedPassportDto);
         verify(mapper, times(1)).toEntity(userRobDto);
         verify(repository, times(1)).save(userRob);
         verify(mapper, times(1)).toDto(userRob);
     }
-
+    @DisplayName(value = "добавление новой записи, негативный сценарий")
     @Test
-    public void testUpdate() {
+    public void save_ReturnsNullWhenSaveFails_NegativeTest() {
+        when(mapper.toEntity(userRobDto)).thenReturn(userRob);
+        when(repository.save(userRob)).thenReturn(null);
+
+        PassportDto savedActualAccountDto = service.save(userRobDto);
+
+        assertNull(savedActualAccountDto);
+        verify(mapper, times(1)).toEntity(userRobDto);
+        verify(repository, times(1)).save(userRob);
+    }
+    @DisplayName(value = "обновление записи, позитивный сценарий")
+    @Test
+    public void update_ReturnsUpdatedPassportDto_PositiveTest() {
 
         when(repository.findById(id)).thenReturn(Optional.of(userAlice));
         when(mapper.mergeToEntity(userRobDto, userAlice)).thenReturn(userRob);
         when(repository.save(userRob)).thenReturn(userRob);
         when(mapper.toDto(userRob)).thenReturn(userRobDto);
 
-        PassportDto updatedPassportDto = passportService.update(id, userRobDto);
+        PassportDto updatedPassportDto = service.update(id, userRobDto);
 
         assertEquals(userRobDto, updatedPassportDto);
         verify(repository, times(1)).findById(id);
@@ -111,20 +136,20 @@ public class PassportServiceImplTest {
         verify(repository, times(1)).save(userRob);
         verify(mapper, times(1)).toDto(userRob);
     }
-
+    @DisplayName(value = "обновление записи, негативный сценарий")
     @Test
-    public void testUpdate_EntityNotFoundException() {
+    public void update_ReturnsEntityNotFoundException_NegativeTest() {
 
         when(repository.findById(id)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> passportService.update(id, userAliceDto));
+                () -> service.update(id, userAliceDto));
 
         assertEquals("Обновление невозможно, passport не найден!", exception.getMessage());
     }
-
+    @DisplayName(value = "получение всех записей, позитивный сценарий")
     @Test
-    public void testFindAllById() {
+    public void findAllById_ReturnsActualDtoList_PositiveTest() {
         List<Long> ids = Arrays.asList(1L, 2L);
 
         List<PassportEntity> passportEntities = Arrays.asList(userRob, userAlice);
@@ -134,10 +159,23 @@ public class PassportServiceImplTest {
         when(repository.findAllById(ids)).thenReturn(passportEntities);
         when(mapper.toDtoList(passportEntities)).thenReturn(expectedDtoList);
 
-        List<PassportDto> actualDtoList = passportService.findAllById(ids);
+        List<PassportDto> actualDtoList = service.findAllById(ids);
 
         assertEquals(expectedDtoList, actualDtoList);
         verify(repository, times(1)).findAllById(ids);
         verify(mapper, times(1)).toDtoList(passportEntities);
+    }
+    @DisplayName(value = "получение всех записей, негативный сценарий")
+    @Test
+    public void findAllById_ReturnsEmptyListWhenReadFails_NegativeTest() {
+        List<Long> ids = Arrays.asList(1L, 2L);
+
+        when(repository.findAllById(ids)).thenReturn(Collections.emptyList());
+
+        List<PassportDto> actualDtoList = service.findAllById(ids);
+
+        assertTrue(actualDtoList.isEmpty());
+        verify(repository, times(1)).findAllById(ids);
+
     }
 }

@@ -1,10 +1,11 @@
-package com.bank.test.profile.service;
+package com.bank.profile.service;
 
 import com.bank.profile.dto.AuditDto;
 import com.bank.profile.entity.AuditEntity;
 import com.bank.profile.mapper.AuditMapper;
 import com.bank.profile.repository.AuditRepository;
 import com.bank.profile.service.impl.AuditServiceImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@DisplayName(value = "Тест сервиса AuditServiceImpl ")
 @ExtendWith(MockitoExtension.class)
 public class AuditServiceImplTest {
     @Mock
@@ -29,7 +31,7 @@ public class AuditServiceImplTest {
     private AuditMapper mapper;
 
     @InjectMocks
-    private AuditServiceImpl auditService;
+    private AuditServiceImpl service;
 
     private final AuditEntity auditEntity = new AuditEntity();
 
@@ -46,26 +48,26 @@ public class AuditServiceImplTest {
     }
 
     private final Long id = 1L;
-
+    @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
-    public void testFindById() {
+    public void findById_ReturnsActualDto_PositiveTest() {
 
         when(repository.findById(id)).thenReturn(Optional.of(auditEntity));
         when(mapper.toDto(auditEntity)).thenReturn(expectedDto);
 
-        AuditDto actualDto = auditService.findById(id);
+        AuditDto actualDto = service.findById(id);
 
         assertEquals(expectedDto, actualDto);
         verify(repository, times(1)).findById(id);
         verify(mapper, times(1)).toDto(auditEntity);
     }
-
+    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
-    public void testFindById_EntityNotFoundException() {
+    public void findById_ReturnsEntityNotFoundException_NegativeTest() {
 
         when(repository.findById(id)).thenReturn(Optional.empty());
 
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> auditService.findById(id));
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> service.findById(id));
 
         assertEquals("Не найден аудит с ID  1", exception.getMessage());
     }
