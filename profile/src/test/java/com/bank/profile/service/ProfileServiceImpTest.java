@@ -85,6 +85,7 @@ public class ProfileServiceImpTest {
         verify(repository, times(1)).findById(id);
         verify(mapper, times(1)).toDto(profileEntity);
     }
+
     @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
     public void findById_ReturnsEntityNotFoundException_NegativeTest() {
@@ -96,6 +97,7 @@ public class ProfileServiceImpTest {
 
         assertEquals("profile с данным id не найден!", exception.getMessage());
     }
+
     @DisplayName(value = "добавление новой записи, позитивный сценарий")
     @Test
     public void save_ReturnsSavedProfileDto_PositiveTest() {
@@ -113,6 +115,7 @@ public class ProfileServiceImpTest {
         verify(repository, times(1)).save(profileEntity);
         verify(mapper, times(1)).toDto(profileEntity);
     }
+
     @DisplayName(value = "добавление новой записи, негативный сценарий")
     @Test
     public void save_ReturnsNullWhenSaveFails_NegativeTest() {
@@ -125,6 +128,7 @@ public class ProfileServiceImpTest {
         verify(mapper, times(1)).toEntity(userRobDto);
         verify(repository, times(1)).save(userRob);
     }
+
     @DisplayName(value = "обновление записи, позитивный сценарий")
     @Test
     public void update_ReturnsUpdatedProfileDto_PositiveTest() {
@@ -145,6 +149,7 @@ public class ProfileServiceImpTest {
         verify(repository, times(1)).save(updatedProfileEntity);
         verify(mapper, times(1)).toDto(updatedProfileEntity);
     }
+
     @DisplayName(value = "обновление записи, негативный сценарий")
     @Test
     public void update_ReturnsEntityNotFoundException_NegativeTest() {
@@ -157,6 +162,7 @@ public class ProfileServiceImpTest {
 
         assertEquals("Обновление невозможно, profile не найден!", exception.getMessage());
     }
+
     @DisplayName(value = "получение всех записей, позитивный сценарий")
     @Test
     public void findAllById_ReturnsActualDtoList_PositiveTest() {
@@ -175,6 +181,7 @@ public class ProfileServiceImpTest {
         verify(repository, times(1)).findAllById(ids);
         verify(mapper, times(1)).toDtoList(profileEntities);
     }
+
     @DisplayName(value = "получение всех записей, негативный сценарий")
     @Test
     public void findAllById_ReturnsEmptyListWhenReadFails_NegativeTest() {

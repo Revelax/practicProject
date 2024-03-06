@@ -68,6 +68,7 @@ public class PassportServiceImplTest {
     }
 
     private final Long id = 1L;
+
     @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
     public void findById_ReturnsActualDto_PositiveTest() {
@@ -81,6 +82,7 @@ public class PassportServiceImplTest {
         verify(repository, times(1)).findById(id);
         verify(mapper, times(1)).toDto(userRob);
     }
+
     @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
     public void findById_ReturnsEntityNotFoundException_NegativeTest() {
@@ -92,6 +94,7 @@ public class PassportServiceImplTest {
 
         assertEquals("passport с данным id не найден!", exception.getMessage());
     }
+
     @DisplayName(value = "добавление новой записи, позитивный сценарий")
     @Test
     public void save_ReturnsSavedPassportDto_PositiveTest() {
@@ -107,6 +110,7 @@ public class PassportServiceImplTest {
         verify(repository, times(1)).save(userRob);
         verify(mapper, times(1)).toDto(userRob);
     }
+
     @DisplayName(value = "добавление новой записи, негативный сценарий")
     @Test
     public void save_ReturnsNullWhenSaveFails_NegativeTest() {
@@ -119,6 +123,7 @@ public class PassportServiceImplTest {
         verify(mapper, times(1)).toEntity(userRobDto);
         verify(repository, times(1)).save(userRob);
     }
+
     @DisplayName(value = "обновление записи, позитивный сценарий")
     @Test
     public void update_ReturnsUpdatedPassportDto_PositiveTest() {
@@ -136,6 +141,7 @@ public class PassportServiceImplTest {
         verify(repository, times(1)).save(userRob);
         verify(mapper, times(1)).toDto(userRob);
     }
+
     @DisplayName(value = "обновление записи, негативный сценарий")
     @Test
     public void update_ReturnsEntityNotFoundException_NegativeTest() {
@@ -147,6 +153,7 @@ public class PassportServiceImplTest {
 
         assertEquals("Обновление невозможно, passport не найден!", exception.getMessage());
     }
+
     @DisplayName(value = "получение всех записей, позитивный сценарий")
     @Test
     public void findAllById_ReturnsActualDtoList_PositiveTest() {
@@ -165,6 +172,7 @@ public class PassportServiceImplTest {
         verify(repository, times(1)).findAllById(ids);
         verify(mapper, times(1)).toDtoList(passportEntities);
     }
+
     @DisplayName(value = "получение всех записей, негативный сценарий")
     @Test
     public void findAllById_ReturnsEmptyListWhenReadFails_NegativeTest() {

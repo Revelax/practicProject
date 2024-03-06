@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 @DisplayName(value = "Тест сервиса RegistrationServiceImp ")
 @ExtendWith(MockitoExtension.class)
 public class RegistrationServiceImpTest {
@@ -38,26 +39,35 @@ public class RegistrationServiceImpTest {
     private RegistrationServiceImp service;
 
     private final RegistrationEntity userRob = new RegistrationEntity();
+
     {
         userRob.setId(1L);
         userRob.setIndex(124L);
     }
+
     private final RegistrationEntity userAlice = new RegistrationEntity();
+
     {
         userAlice.setId(2L);
         userAlice.setIndex(123L);
     }
+
     private final RegistrationDto userRobDto = new RegistrationDto();
+
     {
         userRobDto.setId(1L);
         userRobDto.setIndex(124L);
     }
+
     private final RegistrationDto userAliceDto = new RegistrationDto();
+
     {
         userAliceDto.setId(2L);
         userAliceDto.setIndex(123L);
     }
+
     private final Long id = 1L;
+
     @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
     public void findById_ReturnsActualDto_PositiveTest() {
@@ -74,6 +84,7 @@ public class RegistrationServiceImpTest {
         verify(repository, times(1)).findById(id);
         verify(mapper, times(1)).toDto(registrationEntity);
     }
+
     @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
     public void findById_ReturnsEntityNotFoundException_NegativeTest() {
@@ -85,6 +96,7 @@ public class RegistrationServiceImpTest {
 
         assertEquals("registration с данным id не найден!", exception.getMessage());
     }
+
     @DisplayName(value = "добавление новой записи, позитивный сценарий")
     @Test
     public void save_ReturnsSavedDto_PositiveTest() {
@@ -100,6 +112,7 @@ public class RegistrationServiceImpTest {
         verify(repository, times(1)).save(userRob);
         verify(mapper, times(1)).toDto(userRob);
     }
+
     @DisplayName(value = "добавление новой записи, негативный сценарий")
     @Test
     public void save_ReturnsNullWhenSaveFails_NegativeTest() {
@@ -112,6 +125,7 @@ public class RegistrationServiceImpTest {
         verify(mapper, times(1)).toEntity(userRobDto);
         verify(repository, times(1)).save(userRob);
     }
+
     @DisplayName(value = "обновление записи, позитивный сценарий")
     @Test
     public void update_ReturnsUpdatedRegDto_PositiveTest() {
@@ -133,6 +147,7 @@ public class RegistrationServiceImpTest {
         verify(repository, times(1)).save(updatedRegistrationEntity);
         verify(mapper, times(1)).toDto(updatedRegistrationEntity);
     }
+
     @DisplayName(value = "обновление записи, негативный сценарий")
     @Test
     public void update_ReturnsEntityNotFoundException_NegativeTest() {
@@ -145,6 +160,7 @@ public class RegistrationServiceImpTest {
 
         assertEquals("Обновление невозможно, registration не найден!", exception.getMessage());
     }
+
     @DisplayName(value = "получение всех записей, позитивный сценарий")
     @Test
     public void findAllById_ReturnsActualDtoList_PositiveTest() {
@@ -163,6 +179,7 @@ public class RegistrationServiceImpTest {
         verify(repository, times(1)).findAllById(ids);
         verify(mapper, times(1)).toDtoList(registrationEntities);
     }
+
     @DisplayName(value = "получение всех записей, негативный сценарий")
     @Test
     public void findAllById_ReturnsEmptyListWhenReadFails_NegativeTest() {

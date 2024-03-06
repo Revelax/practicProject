@@ -33,34 +33,37 @@ public class AuditServiceImplTest {
     @InjectMocks
     private AuditServiceImpl service;
 
-    private final AuditEntity auditEntity = new AuditEntity();
+    private final AuditEntity userRob = new AuditEntity();
 
     {
-        auditEntity.setId(1L);
-        auditEntity.setEntityType("User");
+        userRob.setId(1L);
+        userRob.setEntityType("User");
     }
 
-    private final AuditDto expectedDto = new AuditDto();
+
+    private final AuditDto userRobDto = new AuditDto();
 
     {
-        expectedDto.setId(1L);
-        expectedDto.setEntityType("User");
+        userRobDto.setId(1L);
+        userRobDto.setEntityType("User");
     }
 
     private final Long id = 1L;
+
     @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
     public void findById_ReturnsActualDto_PositiveTest() {
 
-        when(repository.findById(id)).thenReturn(Optional.of(auditEntity));
-        when(mapper.toDto(auditEntity)).thenReturn(expectedDto);
+        when(repository.findById(id)).thenReturn(Optional.of(userRob));
+        when(mapper.toDto(userRob)).thenReturn(userRobDto);
 
         AuditDto actualDto = service.findById(id);
 
-        assertEquals(expectedDto, actualDto);
+        assertEquals(userRobDto, actualDto);
         verify(repository, times(1)).findById(id);
-        verify(mapper, times(1)).toDto(auditEntity);
+        verify(mapper, times(1)).toDto(userRob);
     }
+
     @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
     public void findById_ReturnsEntityNotFoundException_NegativeTest() {

@@ -1,7 +1,6 @@
 package com.bank.profile.controller;
 
 import com.bank.profile.dto.ProfileDto;
-import com.bank.profile.entity.ProfileEntity;
 import com.bank.profile.service.impl.ProfileServiceImp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @DisplayName(value = "Тест контроллера ProfileController ")
 @SpringBootTest
 class ProfileControllerTest {
@@ -32,22 +32,16 @@ class ProfileControllerTest {
     @InjectMocks
     private ProfileController profileController;
 
-    public final ProfileEntity userRob = new ProfileEntity();
-    {
-        userRob.setId(1L);
-        userRob.setInn(123L);
-    }
-    private final ProfileEntity userAlice = new ProfileEntity();
-    {
-        userAlice.setId(2L);
-        userAlice.setInn(125L);
-    }
+
     public final ProfileDto userRobDto = new ProfileDto();
+
     {
         userRobDto.setId(1L);
         userRobDto.setInn(123L);
     }
+
     private final ProfileDto userAliceDto = new ProfileDto();
+
     {
         userAliceDto.setId(2L);
         userAliceDto.setInn(125L);
@@ -62,6 +56,7 @@ class ProfileControllerTest {
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(profileController).build();
     }
+
     @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
     public void read_FindById_PositiveTest() throws Exception {
@@ -73,6 +68,7 @@ class ProfileControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(userRobDto)));
     }
+
     @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
     public void read_NotFound_NegativeTest() throws Exception {
@@ -84,6 +80,7 @@ class ProfileControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
+
     @DisplayName(value = "добавление новой записи, позитивный сценарий")
     @Test
     public void create_Save_PositiveTest() throws Exception {
@@ -95,6 +92,7 @@ class ProfileControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(userAliceDto)));
     }
+
     @DisplayName(value = "добавление новой записи, негативный сценарий")
     @Test
     public void create_FailedSave_NegativeTest() throws Exception {
@@ -106,6 +104,7 @@ class ProfileControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
+
     @DisplayName(value = "обновление записи, позитивный сценарий")
     @Test
     public void update_Update_PositiveTest() throws Exception {
@@ -118,6 +117,7 @@ class ProfileControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(userRobDto)));
     }
+
     @DisplayName(value = "обновление записи, негативный сценарий")
     @Test
     public void update_FailedUpdate_NegativeTest() throws Exception {
@@ -130,6 +130,7 @@ class ProfileControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
+
     @DisplayName(value = "получение всех записей, позитивный сценарий")
     @Test
     public void readAll_FindAllById_PositiveTest() throws Exception {
@@ -141,6 +142,7 @@ class ProfileControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+
     @DisplayName(value = "получение всех записей, негативный сценарий")
     @Test
     public void readAll_FindAllByIdFailed_NegativeTest() throws Exception {

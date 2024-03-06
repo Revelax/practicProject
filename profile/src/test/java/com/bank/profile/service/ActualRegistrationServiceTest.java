@@ -61,6 +61,7 @@ public class ActualRegistrationServiceTest {
     }
 
     private final Long id = 1L;
+
     @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
     public void findById_ReturnsActualRegistrationDto_PositiveTest() {
@@ -86,6 +87,7 @@ public class ActualRegistrationServiceTest {
 
         assertEquals("actualRegistration с данным id не найден!", exception.getMessage());
     }
+
     @DisplayName(value = "добавление новой записи, позитивный сценарий")
     @Test
     public void save_ReturnsSavedActualRegistrationDto_PositiveTest() {
@@ -101,6 +103,7 @@ public class ActualRegistrationServiceTest {
         verify(repository, times(1)).save(userRob);
         verify(mapper, times(1)).toDto(userRob);
     }
+
     @DisplayName(value = "добавление новой записи, негативный сценарий")
     @Test
     public void save_ReturnsNullWhenSaveFails_NegativeTest() {
@@ -113,6 +116,7 @@ public class ActualRegistrationServiceTest {
         verify(mapper, times(1)).toEntity(userRobDto);
         verify(repository, times(1)).save(userRob);
     }
+
     @DisplayName(value = "обновление записи, позитивный сценарий")
     @Test
     public void update_ReturnsUpdatedActualRegistrationDto_PositiveTest() {
@@ -130,6 +134,7 @@ public class ActualRegistrationServiceTest {
         verify(repository, times(1)).save(userRob);
         verify(mapper, times(1)).toDto(userRob);
     }
+
     @DisplayName(value = "обновление записи, негативный сценарий")
     @Test
     public void update_ReturnsEntityNotFoundException_NegativeTest() {
@@ -141,6 +146,7 @@ public class ActualRegistrationServiceTest {
 
         assertEquals("Обновление невозможно, ActualRegistration не найден!", exception.getMessage());
     }
+
     @DisplayName(value = "получение всех записей, позитивный сценарий")
     @Test
     public void findAllById_ReturnsActualDtoList_PositiveTest() {
@@ -159,6 +165,7 @@ public class ActualRegistrationServiceTest {
         verify(repository, times(1)).findAllById(ids);
         verify(mapper, times(1)).toDtoList(passportEntities);
     }
+
     @DisplayName(value = "получение всех записей, негативный сценарий")
     @Test
     public void findAllById_ReturnsEmptyListWhenReadFails_NegativeTest() {

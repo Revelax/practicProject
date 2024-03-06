@@ -1,7 +1,6 @@
 package com.bank.profile.controller;
 
 import com.bank.profile.dto.AuditDto;
-import com.bank.profile.entity.AuditEntity;
 import com.bank.profile.service.impl.AuditServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @DisplayName(value = "Тест контроллера AuditController ")
 @SpringBootTest
 class AuditControllerTest {
@@ -30,13 +30,6 @@ class AuditControllerTest {
 
     @InjectMocks
     private AuditController auditController;
-
-    private final AuditEntity auditEntity = new AuditEntity();
-
-    {
-        auditEntity.setId(1L);
-        auditEntity.setEntityType("User");
-    }
 
     private final AuditDto userRobDto = new AuditDto();
 
@@ -54,6 +47,7 @@ class AuditControllerTest {
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(auditController).build();
     }
+
     @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
     public void read_FindById_PositiveTest() throws Exception {
@@ -65,6 +59,7 @@ class AuditControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(userRobDto)));
     }
+
     @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
     public void read_NotFound_NegativeTest() throws Exception {

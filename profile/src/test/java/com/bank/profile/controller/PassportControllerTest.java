@@ -1,7 +1,6 @@
 package com.bank.profile.controller;
 
 import com.bank.profile.dto.PassportDto;
-import com.bank.profile.entity.PassportEntity;
 import com.bank.profile.service.impl.PassportServiceImp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @DisplayName(value = "Тест контроллера PassportController ")
 @SpringBootTest
 class PassportControllerTest {
@@ -31,27 +31,21 @@ class PassportControllerTest {
     private PassportServiceImp service;
     @InjectMocks
     private PassportController passportController;
-    private final PassportEntity userRob = new PassportEntity();
-    {
-        userRob.setId(1L);
-        userRob.setFirstName("Rob");
-    }
-    private final PassportEntity userAlice = new PassportEntity();
-    {
-        userAlice.setId(2L);
-        userAlice.setFirstName("Alice");
-    }
 
     private final PassportDto userRobDto = new PassportDto();
+
     {
         userRobDto.setId(1L);
         userRobDto.setFirstName("Rob");
     }
+
     private final PassportDto userAliceDto = new PassportDto();
+
     {
         userAliceDto.setId(2L);
         userAliceDto.setFirstName("Alice");
     }
+
     private final Long id = 1L;
 
 
@@ -62,6 +56,7 @@ class PassportControllerTest {
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(passportController).build();
     }
+
     @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
     public void read_FindById_PositiveTest() throws Exception {
@@ -74,6 +69,7 @@ class PassportControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(userRobDto)));
     }
+
     @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
     public void read_NotFound_NegativeTest() throws Exception {
@@ -85,6 +81,7 @@ class PassportControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
+
     @DisplayName(value = "добавление новой записи, позитивный сценарий")
     @Test
     public void create_Save_PositiveTest() throws Exception {
@@ -96,6 +93,7 @@ class PassportControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(userAliceDto)));
     }
+
     @DisplayName(value = "добавление новой записи, негативный сценарий")
     @Test
     public void create_FailedSave_NegativeTest() throws Exception {
@@ -107,6 +105,7 @@ class PassportControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
+
     @DisplayName(value = "обновление записи, позитивный сценарий")
     @Test
     public void update_Update_PositiveTest() throws Exception {
@@ -120,6 +119,7 @@ class PassportControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(userRobDto)));
     }
+
     @DisplayName(value = "обновление записи, негативный сценарий")
     @Test
     public void update_FailedUpdate_NegativeTest() throws Exception {
@@ -133,6 +133,7 @@ class PassportControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
+
     @DisplayName(value = "получение всех записей, позитивный сценарий")
     @Test
     public void readAll_FindAllById_PositiveTest() throws Exception {
@@ -144,6 +145,7 @@ class PassportControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+
     @DisplayName(value = "получение всех записей, негативный сценарий")
     @Test
     public void readAll_FindAllByIdFailed_NegativeTest() throws Exception {
