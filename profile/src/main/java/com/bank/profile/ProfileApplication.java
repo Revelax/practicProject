@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan("com.bank.common")
 @EnableEurekaClient
 @SpringBootApplication(scanBasePackages = {"com.bank.common", "com.bank.profile"})
 public class ProfileApplication {

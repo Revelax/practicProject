@@ -24,16 +24,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.bank</groupId>
-            <artifactId>common</artifactId>
-            <version>${common.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.bank</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${common.version}</version>
         </dependency>
 
         <dependency>
