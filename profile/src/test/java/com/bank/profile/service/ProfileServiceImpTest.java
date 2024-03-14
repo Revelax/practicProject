@@ -69,9 +69,9 @@ public class ProfileServiceImpTest {
 
     private final Long id = 1L;
 
-    @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
-    public void findById_ReturnsActualDto_PositiveTest() {
+    @DisplayName(value = "поиск по id, позитивный сценарий")
+    public void findByIdPositiveTest() {
 
         ProfileEntity profileEntity = userRob;
         ProfileDto expectedDto = userRobDto;
@@ -86,9 +86,9 @@ public class ProfileServiceImpTest {
         verify(mapper, times(1)).toDto(profileEntity);
     }
 
-    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
-    public void findById_ReturnsEntityNotFoundException_NegativeTest() {
+    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
+    public void findByNonExistIdNegativeTest() {
 
         when(repository.findById(id)).thenReturn(Optional.empty());
 
@@ -98,9 +98,9 @@ public class ProfileServiceImpTest {
         assertEquals("profile с данным id не найден!", exception.getMessage());
     }
 
-    @DisplayName(value = "добавление новой записи, позитивный сценарий")
     @Test
-    public void save_ReturnsSavedProfileDto_PositiveTest() {
+    @DisplayName(value = "добавление новой записи, позитивный сценарий")
+    public void savePositiveTest() {
         ProfileDto profileDto = userRobDto;
         ProfileEntity profileEntity = userRob;
 
@@ -116,9 +116,9 @@ public class ProfileServiceImpTest {
         verify(mapper, times(1)).toDto(profileEntity);
     }
 
-    @DisplayName(value = "добавление новой записи, негативный сценарий")
     @Test
-    public void save_ReturnsNullWhenSaveFails_NegativeTest() {
+    @DisplayName(value = "добавление новой записи, негативный сценарий")
+    public void saveFailsNegativeTest() {
         when(mapper.toEntity(userRobDto)).thenReturn(userRob);
         when(repository.save(userRob)).thenReturn(null);
 
@@ -129,9 +129,9 @@ public class ProfileServiceImpTest {
         verify(repository, times(1)).save(userRob);
     }
 
-    @DisplayName(value = "обновление записи, позитивный сценарий")
     @Test
-    public void update_ReturnsUpdatedProfileDto_PositiveTest() {
+    @DisplayName(value = "обновление записи, позитивный сценарий")
+    public void updatePositiveTest() {
         ProfileDto profileDto = userRobDto;
         ProfileEntity profileEntityById = userAlice;
         ProfileEntity updatedProfileEntity = userRob;
@@ -150,9 +150,9 @@ public class ProfileServiceImpTest {
         verify(mapper, times(1)).toDto(updatedProfileEntity);
     }
 
-    @DisplayName(value = "обновление записи, негативный сценарий")
     @Test
-    public void update_ReturnsEntityNotFoundException_NegativeTest() {
+    @DisplayName(value = "обновление записи, негативный сценарий")
+    public void updateByNonExistIdNegativeTest() {
         ProfileDto profileDto = userAliceDto;
 
         when(repository.findById(id)).thenReturn(Optional.empty());
@@ -163,9 +163,9 @@ public class ProfileServiceImpTest {
         assertEquals("Обновление невозможно, profile не найден!", exception.getMessage());
     }
 
-    @DisplayName(value = "получение всех записей, позитивный сценарий")
     @Test
-    public void findAllById_ReturnsActualDtoList_PositiveTest() {
+    @DisplayName(value = "получение всех записей, позитивный сценарий")
+    public void findAllByIdPositiveTest() {
         List<Long> ids = Arrays.asList(1L, 2L);
 
         List<ProfileEntity> profileEntities = Arrays.asList(userRob, userAlice);
@@ -182,9 +182,9 @@ public class ProfileServiceImpTest {
         verify(mapper, times(1)).toDtoList(profileEntities);
     }
 
-    @DisplayName(value = "получение всех записей, негативный сценарий")
     @Test
-    public void findAllById_ReturnsEmptyListWhenReadFails_NegativeTest() {
+    @DisplayName(value = "получение всех записей, негативный сценарий")
+    public void findAllByIdNonExistIdNegativeTest() {
         List<Long> ids = Arrays.asList(1L, 2L);
 
         when(repository.findAllById(ids)).thenReturn(Collections.emptyList());
@@ -193,7 +193,5 @@ public class ProfileServiceImpTest {
 
         assertTrue(actualDtoList.isEmpty());
         verify(repository, times(1)).findAllById(ids);
-
     }
-
 }

@@ -62,9 +62,9 @@ public class AccountDetailsIdServiceTest {
 
     private final Long id = 1L;
 
-    @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
-    public void findById_ReturnsAccountDetailsIdDto_PositiveTest() {
+    @DisplayName(value = "поиск по id, позитивный сценарий")
+    public void findByIdPositiveTest() {
 
         when(repository.findById(id)).thenReturn(Optional.of(userRob));
         when(mapper.toDto(userRob)).thenReturn(userRobDto);
@@ -76,9 +76,9 @@ public class AccountDetailsIdServiceTest {
         verify(mapper, times(1)).toDto(userRob);
     }
 
-    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
-    public void findById_ReturnsEntityNotFoundException_NegativeTest() {
+    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
+    public void findByNonExistIdNegativeTest() {
 
         when(repository.findById(id)).thenReturn(Optional.empty());
 
@@ -88,9 +88,9 @@ public class AccountDetailsIdServiceTest {
         assertEquals("accountDetailsId с данным id не найден!", exception.getMessage());
     }
 
-    @DisplayName(value = "добавление новой записи, позитивный сценарий")
     @Test
-    public void save_ReturnsSavedActualAccountDto_PositiveTest() {
+    @DisplayName(value = "добавление новой записи, позитивный сценарий")
+    public void savePositiveTest() {
 
         when(mapper.toEntity(userRobDto)).thenReturn(userRob);
         when(repository.save(userRob)).thenReturn(userRob);
@@ -104,9 +104,9 @@ public class AccountDetailsIdServiceTest {
         verify(mapper, times(1)).toDto(userRob);
     }
 
-    @DisplayName(value = "добавление новой записи, негативный сценарий")
     @Test
-    public void save_ReturnsNullWhenSaveFails_NegativeTest() {
+    @DisplayName(value = "добавление новой записи, негативный сценарий")
+    public void saveFailsNegativeTest() {
         when(mapper.toEntity(userRobDto)).thenReturn(userRob);
         when(repository.save(userRob)).thenReturn(null);
 
@@ -117,9 +117,9 @@ public class AccountDetailsIdServiceTest {
         verify(repository, times(1)).save(userRob);
     }
 
-    @DisplayName(value = "обновление записи, позитивный сценарий")
     @Test
-    public void update_ReturnsUpdatedActualAccountDto_PositiveTest() {
+    @DisplayName(value = "обновление записи, позитивный сценарий")
+    public void updatePositiveTest() {
 
         when(repository.findById(id)).thenReturn(Optional.of(userAlice));
         when(mapper.mergeToEntity(userRobDto, userAlice)).thenReturn(userRob);
@@ -135,9 +135,9 @@ public class AccountDetailsIdServiceTest {
         verify(mapper, times(1)).toDto(userRob);
     }
 
-    @DisplayName(value = "обновление записи, негативный сценарий")
     @Test
-    public void update_ReturnsEntityNotFoundException_NegativeTest() {
+    @DisplayName(value = "обновление записи, негативный сценарий")
+    public void updateByNonExistIdNegativeTest() {
 
         when(repository.findById(id)).thenReturn(Optional.empty());
 
@@ -147,9 +147,9 @@ public class AccountDetailsIdServiceTest {
         assertEquals("Обновление невозможно, accountDetailsId не найден!", exception.getMessage());
     }
 
-    @DisplayName(value = "получение всех записей, позитивный сценарий")
     @Test
-    public void findAllById_ReturnsActualDtoList_PositiveTest() {
+    @DisplayName(value = "получение всех записей, позитивный сценарий")
+    public void findAllByIdPositiveTest() {
         List<Long> ids = Arrays.asList(1L, 2L);
 
         List<AccountDetailsIdEntity> accountEntities = Arrays.asList(userRob, userAlice);
@@ -166,9 +166,9 @@ public class AccountDetailsIdServiceTest {
         verify(mapper, times(1)).toDtoList(accountEntities);
     }
 
-    @DisplayName(value = "получение всех записей, негативный сценарий")
     @Test
-    public void findAllById_ReturnsEmptyListWhenReadFails_NegativeTest() {
+    @DisplayName(value = "получение всех записей, негативный сценарий")
+    public void findAllByIdNonExistIdNegativeTest() {
         List<Long> ids = Arrays.asList(1L, 2L);
 
         when(repository.findAllById(ids)).thenReturn(Collections.emptyList());
@@ -177,6 +177,5 @@ public class AccountDetailsIdServiceTest {
 
         assertTrue(actualDtoList.isEmpty());
         verify(repository, times(1)).findAllById(ids);
-
     }
 }

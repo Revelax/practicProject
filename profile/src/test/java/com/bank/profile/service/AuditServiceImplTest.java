@@ -50,9 +50,9 @@ public class AuditServiceImplTest {
 
     private final Long id = 1L;
 
-    @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
-    public void findById_ReturnsActualDto_PositiveTest() {
+    @DisplayName(value = "поиск по id, позитивный сценарий")
+    public void findByIdPositiveTest() {
 
         when(repository.findById(id)).thenReturn(Optional.of(userRob));
         when(mapper.toDto(userRob)).thenReturn(userRobDto);
@@ -64,15 +64,15 @@ public class AuditServiceImplTest {
         verify(mapper, times(1)).toDto(userRob);
     }
 
-    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
-    public void findById_ReturnsEntityNotFoundException_NegativeTest() {
+    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
+    public void findByNonExistIdNegativeTest() {
 
         when(repository.findById(id)).thenReturn(Optional.empty());
 
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> service.findById(id));
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
+                () -> service.findById(id));
 
         assertEquals("Не найден аудит с ID  1", exception.getMessage());
     }
-
 }

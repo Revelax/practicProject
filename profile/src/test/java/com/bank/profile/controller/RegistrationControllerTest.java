@@ -59,21 +59,22 @@ class RegistrationControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(registrationController).build();
     }
 
-    @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
-    public void read_FindById_PositiveTest() throws Exception {
+    @DisplayName(value = "чтение по id, позитивный сценарий")
+    public void readReadByIdPositiveTest() throws Exception {
 
         Mockito.when(service.findById(id)).thenReturn(userRobDto);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/registration/read/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(userRobDto)));
+                .andExpect(MockMvcResultMatchers.content()
+                        .json(objectMapper.writeValueAsString(userRobDto)));
     }
 
-    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
-    public void read_NotFound_NegativeTest() throws Exception {
+    @DisplayName(value = "чтение по несуществующему id, негативный сценарий")
+    public void readNotFoundNegativeTest() throws Exception {
 
         Mockito.when(service.findById(id)).thenReturn(null);
 
@@ -83,21 +84,22 @@ class RegistrationControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
 
-    @DisplayName(value = "добавление новой записи, позитивный сценарий")
     @Test
-    public void create_Save_PositiveTest() throws Exception {
+    @DisplayName(value = "добавление новой записи, позитивный сценарий")
+    public void createSavePositiveTest() throws Exception {
         Mockito.when(service.save(userAliceDto)).thenReturn(userAliceDto);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/registration/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userAliceDto)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(userAliceDto)));
+                .andExpect(MockMvcResultMatchers.content()
+                        .json(objectMapper.writeValueAsString(userAliceDto)));
     }
 
-    @DisplayName(value = "добавление новой записи, негативный сценарий")
     @Test
-    public void create_FailedSave_NegativeTest() throws Exception {
+    @DisplayName(value = "добавление новой записи, негативный сценарий")
+    public void createFailedSaveNegativeTest() throws Exception {
         Mockito.when(service.save(userAliceDto)).thenReturn(null);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/registration/create")
@@ -107,10 +109,9 @@ class RegistrationControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
 
-    @DisplayName(value = "обновление записи, позитивный сценарий")
     @Test
-    public void update_Update_PositiveTest() throws Exception {
-        Long id = 1L;
+    @DisplayName(value = "обновление записи, позитивный сценарий")
+    public void updateUpdatePositiveTest() throws Exception {
 
         Mockito.when(service.update(id, userRobDto)).thenReturn(userRobDto);
 
@@ -118,12 +119,13 @@ class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userRobDto)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(userRobDto)));
+                .andExpect(MockMvcResultMatchers.content()
+                        .json(objectMapper.writeValueAsString(userRobDto)));
     }
 
-    @DisplayName(value = "обновление записи, негативный сценарий")
     @Test
-    public void update_FailedUpdate_NegativeTest() throws Exception {
+    @DisplayName(value = "обновление записи, негативный сценарий")
+    public void updateFailedUpdateNegativeTest() throws Exception {
 
         Mockito.when(service.update(id, userRobDto)).thenReturn(null);
 
@@ -134,9 +136,9 @@ class RegistrationControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
 
-    @DisplayName(value = "получение всех записей, позитивный сценарий")
     @Test
-    public void readAll_FindAllById_PositiveTest() throws Exception {
+    @DisplayName(value = "чтение записей по списку id, позитивный сценарий")
+    public void readAllReadAllByIdPositiveTest() throws Exception {
         Mockito.when(service.findAllById(Arrays.asList(1L, 2L)))
                 .thenReturn(Arrays.asList(userRobDto, userAliceDto));
 
@@ -146,9 +148,9 @@ class RegistrationControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    @DisplayName(value = "получение всех записей, негативный сценарий")
     @Test
-    public void readAll_FindAllByIdFailed_NegativeTest() throws Exception {
+    @DisplayName(value = "чтение записей по списку id, негативный сценарий")
+    public void readAllReadAllByIdFailedNegativeTest() throws Exception {
         Mockito.when(service.findAllById(Arrays.asList(1L, 2L)))
                 .thenReturn(Collections.emptyList());
 
@@ -157,6 +159,5 @@ class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
-
     }
 }

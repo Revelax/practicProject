@@ -48,21 +48,22 @@ class AuditControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(auditController).build();
     }
 
-    @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
-    public void read_FindById_PositiveTest() throws Exception {
+    @DisplayName(value = "чтение по id, позитивный сценарий")
+    public void readReadByIdPositiveTest() throws Exception {
 
         Mockito.when(service.findById(id)).thenReturn(userRobDto);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/audit/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(userRobDto)));
+                .andExpect(MockMvcResultMatchers.content()
+                        .json(objectMapper.writeValueAsString(userRobDto)));
     }
 
-    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
-    public void read_NotFound_NegativeTest() throws Exception {
+    @DisplayName(value = "чтение по несуществующему id, негативный сценарий")
+    public void readNotFoundNegativeTest() throws Exception {
 
         Mockito.when(service.findById(id)).thenReturn(null);
 
@@ -71,5 +72,4 @@ class AuditControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
-
 }

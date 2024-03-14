@@ -68,9 +68,9 @@ public class RegistrationServiceImpTest {
 
     private final Long id = 1L;
 
-    @DisplayName(value = "поиск по id, позитивный сценарий")
     @Test
-    public void findById_ReturnsActualDto_PositiveTest() {
+    @DisplayName(value = "поиск по id, позитивный сценарий")
+    public void findByIdPositiveTest() {
 
         RegistrationEntity registrationEntity = userRob;
         RegistrationDto expectedDto = userRobDto;
@@ -85,9 +85,9 @@ public class RegistrationServiceImpTest {
         verify(mapper, times(1)).toDto(registrationEntity);
     }
 
-    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
     @Test
-    public void findById_ReturnsEntityNotFoundException_NegativeTest() {
+    @DisplayName(value = "поиск по несуществующему id, негативный сценарий")
+    public void findByNonExistIdNegativeTest() {
 
         when(repository.findById(id)).thenReturn(Optional.empty());
 
@@ -97,9 +97,9 @@ public class RegistrationServiceImpTest {
         assertEquals("registration с данным id не найден!", exception.getMessage());
     }
 
-    @DisplayName(value = "добавление новой записи, позитивный сценарий")
     @Test
-    public void save_ReturnsSavedDto_PositiveTest() {
+    @DisplayName(value = "добавление новой записи, позитивный сценарий")
+    public void savePositiveTest() {
 
         when(mapper.toEntity(userRobDto)).thenReturn(userRob);
         when(repository.save(userRob)).thenReturn(userRob);
@@ -113,9 +113,9 @@ public class RegistrationServiceImpTest {
         verify(mapper, times(1)).toDto(userRob);
     }
 
-    @DisplayName(value = "добавление новой записи, негативный сценарий")
     @Test
-    public void save_ReturnsNullWhenSaveFails_NegativeTest() {
+    @DisplayName(value = "добавление новой записи, негативный сценарий")
+    public void saveFailsNegativeTest() {
         when(mapper.toEntity(userRobDto)).thenReturn(userRob);
         when(repository.save(userRob)).thenReturn(null);
 
@@ -126,16 +126,17 @@ public class RegistrationServiceImpTest {
         verify(repository, times(1)).save(userRob);
     }
 
-    @DisplayName(value = "обновление записи, позитивный сценарий")
     @Test
-    public void update_ReturnsUpdatedRegDto_PositiveTest() {
+    @DisplayName(value = "обновление записи, позитивный сценарий")
+    public void updatePositiveTest() {
 
         RegistrationDto registrationDto = userRobDto;
         RegistrationEntity registrationEntityById = userAlice;
         RegistrationEntity updatedRegistrationEntity = userRob;
 
         when(repository.findById(id)).thenReturn(Optional.of(registrationEntityById));
-        when(mapper.mergeToEntity(registrationDto, registrationEntityById)).thenReturn(updatedRegistrationEntity);
+        when(mapper.mergeToEntity(registrationDto, registrationEntityById))
+                .thenReturn(updatedRegistrationEntity);
         when(repository.save(updatedRegistrationEntity)).thenReturn(updatedRegistrationEntity);
         when(mapper.toDto(updatedRegistrationEntity)).thenReturn(registrationDto);
 
@@ -148,9 +149,9 @@ public class RegistrationServiceImpTest {
         verify(mapper, times(1)).toDto(updatedRegistrationEntity);
     }
 
-    @DisplayName(value = "обновление записи, негативный сценарий")
     @Test
-    public void update_ReturnsEntityNotFoundException_NegativeTest() {
+    @DisplayName(value = "обновление записи, негативный сценарий")
+    public void updateByNonExistIdNegativeTest() {
         RegistrationDto registrationDtoDto = userAliceDto;
 
         when(repository.findById(id)).thenReturn(Optional.empty());
@@ -161,9 +162,9 @@ public class RegistrationServiceImpTest {
         assertEquals("Обновление невозможно, registration не найден!", exception.getMessage());
     }
 
-    @DisplayName(value = "получение всех записей, позитивный сценарий")
     @Test
-    public void findAllById_ReturnsActualDtoList_PositiveTest() {
+    @DisplayName(value = "получение всех записей, позитивный сценарий")
+    public void findAllByIdPositiveTest() {
         List<Long> ids = Arrays.asList(1L, 2L);
 
         List<RegistrationEntity> registrationEntities = Arrays.asList(userRob, userAlice);
@@ -180,9 +181,9 @@ public class RegistrationServiceImpTest {
         verify(mapper, times(1)).toDtoList(registrationEntities);
     }
 
-    @DisplayName(value = "получение всех записей, негативный сценарий")
     @Test
-    public void findAllById_ReturnsEmptyListWhenReadFails_NegativeTest() {
+    @DisplayName(value = "получение всех записей, негативный сценарий")
+    public void findAllByIdNonExistIdNegativeTest() {
         List<Long> ids = Arrays.asList(1L, 2L);
 
         when(repository.findAllById(ids)).thenReturn(Collections.emptyList());
@@ -191,6 +192,5 @@ public class RegistrationServiceImpTest {
 
         assertTrue(actualDtoList.isEmpty());
         verify(repository, times(1)).findAllById(ids);
-
     }
 }

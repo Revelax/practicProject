@@ -36,9 +36,10 @@ public class AuditMapperTest {
     public void setUp() {
         mapper = Mockito.mock(AuditMapper.class);
     }
-    @DisplayName(value = "маппинг в Dto, позитивный сценарий")
+
     @Test
-    public void toDto_MapperToDto_PositiveTest() {
+    @DisplayName(value = "маппинг в Dto")
+    public void toDtoTest() {
 
         when(mapper.toDto(userRob)).thenReturn(userRobDto);
 
@@ -47,9 +48,10 @@ public class AuditMapperTest {
         verify(mapper).toDto(userRob);
         assertEquals(userRobDto, result);
     }
-    @DisplayName(value = "маппинг в Dto, негативный сценарий")
+
     @Test
-    public void toDto_MapperToDto_NegativeTest() {
+    @DisplayName(value = "маппинг в dto, на вход подан null")
+    public void toDtoNullTest() {
 
         when(mapper.toDto(userRob)).thenReturn(new AuditDto());
 

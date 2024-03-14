@@ -55,9 +55,9 @@ public class RegistrationMapperTest {
         mapper = Mockito.mock(RegistrationMapper.class);
     }
 
-    @DisplayName(value = "маппинг в Entity, позитивный сценарий")
     @Test
-    public void toEntity_MapperToEntity_PositiveTest() {
+    @DisplayName(value = "маппинг в Entity")
+    public void toEntityTest() {
 
         when(mapper.toEntity(userRobDto)).thenReturn(userRob);
 
@@ -67,9 +67,9 @@ public class RegistrationMapperTest {
         assertEquals(userRob, result);
     }
 
-    @DisplayName(value = "маппинг в Entity, негативный сценарий")
     @Test
-    public void toEntity_MapperToEntity_NegativeTest() {
+    @DisplayName(value = "маппинг в Entity, на вход подан null")
+    public void toEntityNullTest() {
         when(mapper.toEntity(userRobDto)).thenReturn(new RegistrationEntity());
 
         RegistrationEntity result = mapper.toEntity(userRobDto);
@@ -77,9 +77,9 @@ public class RegistrationMapperTest {
         assertNotEquals(userRob, result);
     }
 
-    @DisplayName(value = "маппинг в Dto, позитивный сценарий")
     @Test
-    public void toDto_MapperToDto_PositiveTest() {
+    @DisplayName(value = "маппинг в Dto")
+    public void toDtoTest() {
 
         when(mapper.toDto(userRob)).thenReturn(userRobDto);
 
@@ -89,9 +89,9 @@ public class RegistrationMapperTest {
         assertEquals(userRobDto, result);
     }
 
-    @DisplayName(value = "маппинг в Dto, негативный сценарий")
     @Test
-    public void toDto_MapperToDto_NegativeTest() {
+    @DisplayName(value = "маппинг в dto, на вход подан null")
+    public void toDtoNullTest() {
 
         when(mapper.toDto(userRob)).thenReturn(new RegistrationDto());
 
@@ -100,9 +100,9 @@ public class RegistrationMapperTest {
         assertNotEquals(userRobDto, result);
     }
 
-    @DisplayName(value = "маппинг слияния записей в Entity, позитивный сценарий")
     @Test
-    public void mergeToEntity_MapperMergeToEntity_PositiveTest() {
+    @DisplayName(value = "слияние в entity")
+    public void mergeToEntityTest() {
 
         when(mapper.mergeToEntity(userRobDto, userAlice)).thenReturn(userRob);
 
@@ -112,9 +112,9 @@ public class RegistrationMapperTest {
         assertEquals(userRob, result);
     }
 
-    @DisplayName(value = "маппинг слияния записей в Entity, негативный сценарий")
     @Test
-    public void mergeToEntity_MapperMergeToEntity_NegativeTest() {
+    @DisplayName(value = "слияние в entity, на вход подан null")
+    public void mergeToEntityNullTest() {
 
         when(mapper.mergeToEntity(userRobDto, userAlice)).thenReturn(new RegistrationEntity());
 
@@ -123,9 +123,9 @@ public class RegistrationMapperTest {
         assertNotEquals(userRob, result);
     }
 
-    @DisplayName(value = "маппинг в List с Dto, позитивный сценарий")
     @Test
-    public void toDtoList_MapperToDtoList_PositiveTest() {
+    @DisplayName(value = "маппинг в List с Dto")
+    public void toDtoListTest() {
 
         List<RegistrationEntity> accountEntities = Arrays.asList(userRob, userAlice);
 
@@ -139,14 +139,15 @@ public class RegistrationMapperTest {
         assertEquals(expectedDtoList, result);
     }
 
-    @DisplayName(value = "маппинг в List с Dto, негативный сценарий")
     @Test
-    public void toDtoList_MapperToDtoList_NegativeTest() {
+    @DisplayName(value = "маппинг в List с Dto, на вход подан null")
+    public void toDtoListNullTest() {
 
         List<RegistrationEntity> accountEntities = Arrays.asList(userRob, userAlice);
         List<RegistrationDto> expectedDtoList = Arrays.asList(userRobDto, userAliceDto);
 
-        when(mapper.toDtoList(accountEntities)).thenReturn(Arrays.asList(new RegistrationDto(), new RegistrationDto()));
+        when(mapper.toDtoList(accountEntities))
+                .thenReturn(Arrays.asList(new RegistrationDto(), new RegistrationDto()));
 
         List<RegistrationDto> result = mapper.toDtoList(accountEntities);
 
