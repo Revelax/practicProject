@@ -3,6 +3,8 @@ package com.bank.profile.controller;
 import com.bank.profile.dto.ActualRegistrationDto;
 import com.bank.profile.entity.ActualRegistrationEntity;
 import com.bank.profile.service.ActualRegistrationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,10 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/actual/registration")
+@Tag(
+        name = "Актуальная регистрация",
+        description = "Контроллер для управления актуальной регистрацией"
+)
 public class ActualRegistrationController {
 
     private final ActualRegistrationService service;
@@ -30,6 +36,10 @@ public class ActualRegistrationController {
      * @param id технический идентификатор {@link ActualRegistrationEntity}
      * @return {@link ResponseEntity<ActualRegistrationDto>}
      */
+    @Operation(
+            summary = "Чтение по ID",
+            description = "Чтение актуальных данных регистрации по ID из БД"
+    )
     @GetMapping("/read/{id}")
     public ResponseEntity<ActualRegistrationDto> read(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.findById(id));
@@ -39,6 +49,10 @@ public class ActualRegistrationController {
      * @param actualRegistration {@link ActualRegistrationDto}
      * @return {@link ResponseEntity<ActualRegistrationDto>}
      */
+    @Operation(
+            summary = "Добавление записи",
+            description = "Добавление актуальных данных регистрации аккаунта в БД"
+    )
     @PostMapping("/create")
     public ResponseEntity<ActualRegistrationDto> create(@RequestBody ActualRegistrationDto actualRegistration) {
         return ResponseEntity.ok(service.save(actualRegistration));
@@ -49,6 +63,10 @@ public class ActualRegistrationController {
      * @param id                 технический идентификатор {@link ActualRegistrationEntity}
      * @return {@link ResponseEntity<ActualRegistrationDto>}
      */
+    @Operation(
+            summary = "Обновление записи",
+            description = "Обновление актуальных данных регистрации аккаунта в БД"
+    )
     @PutMapping("/update/{id}")
     public ResponseEntity<ActualRegistrationDto> update(@PathVariable Long id,
                                                         @RequestBody ActualRegistrationDto actualRegistration) {
@@ -59,6 +77,10 @@ public class ActualRegistrationController {
      * @param ids лист технических идентификаторов {@link ActualRegistrationEntity}
      * @return {@link ResponseEntity} {@link List<ActualRegistrationDto>}
      */
+    @Operation(
+            summary = "Чтение записей по списку id",
+            description = "Чтение актуальных данных регистрации аккаунтов в БД, по списку id"
+    )
     @GetMapping("read/all")
     public ResponseEntity<List<ActualRegistrationDto>> readAllById(@RequestParam List<Long> ids) {
         return ResponseEntity.ok(service.findAllById(ids));
